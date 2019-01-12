@@ -51,6 +51,25 @@ class CreateItem extends Component {
     });
   };
 
+  uploadFile = async event => {
+    console.log('uploading file'); // eslint-disable-line
+    const files = event.target.files;
+    const data = new FormData();
+    data.append('file', files[0]);
+    data.append('upload_preset', 'sickfits');
+
+    const res = await fetch('', {
+      method: 'POST',
+      body: data
+    });
+    const file = await res.json();
+    console.log(file); // eslint-disable-line
+    this.setState({
+      image: file.secure_url,
+      largeImage: file.eager[0].secure_url
+    });
+  };
+
   render() {
     return (
       <Mutation mutation={CREATE_ITEM_MUTATION} variables={this.state}>
@@ -58,6 +77,19 @@ class CreateItem extends Component {
           <Form onSubmit={(event) => this.handleSubmit(event, createItem)}>
             <ErrorMessage error={error} />
             <fieldset disabled={loading} aria-busy={loading}>
+            <label htmlFor="file">
+                Image
+                <input
+                  type="file"
+                  id ="file"
+                  name="file"
+                  placeholder="Upload an image"
+                  required
+                  onChange={this.uploadFile}
+                  />
+                  {this.state.image && <img src={this.state.image} alt="Upload Preview" width="200" />}
+              </label>
+
               <label htmlFor="title">
                 Title
                 <input
