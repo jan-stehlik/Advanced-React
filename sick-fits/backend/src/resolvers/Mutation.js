@@ -7,6 +7,19 @@ const Mutation = {
     }, info);
 
     return item;
+  },
+  async updateItem(parent, args, context, info) {
+    const newData = { ...args };
+    // ID is always immutable
+    delete newData.id;
+    const item = context.db.mutation.updateItem({
+      data: newData,
+      where: {
+        id: args.id,
+      },
+    }, info);
+
+    return item;
   }
 };
 
