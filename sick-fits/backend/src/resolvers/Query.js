@@ -10,6 +10,7 @@ const Query = {
   //   const item = await context.db.query.item();
   //   return item;
   // },
+  itemsConnection: forwardTo('db'),
 };
 
 module.exports = Query;
